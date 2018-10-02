@@ -48,4 +48,22 @@ public class User implements Serializable {
      */
     @Size(min = 1, max = 2)
     private String sex;
+
+    /**
+     * 关系：多个用户对应于一个角色
+     */
+    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
+    private Role role;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

@@ -52,4 +52,39 @@ public class UserServiceImpl implements IUserService {
     public User save(User entity) {
         return userRepository.save(entity);
     }
+
+    @Override
+    public List<User> readBySex(String sex) {
+        return userRepository.readBySex(sex);
+    }
+
+    @Override
+    public List<User> findDistinctByUsernameIgnoreCaseOrAgeOrderByUsernameAsc(String username, Integer age) {
+        return userRepository.findDistinctByUsernameIgnoreCaseOrAgeOrderByUsernameAsc(username, age);
+    }
+
+    @Override
+    public List<User> findByUsernameAndSex(String username, String sex) {
+        return userRepository.findByUsernameAndSex(username, sex);
+    }
+
+    @Override
+    public List<User> findByAgeBetween(Integer start, Integer end) {
+        return userRepository.findByAgeBetween(start, end);
+    }
+
+    @Override
+    public List<User> findByUsernameLike(String username) {
+        return userRepository.findByUsernameLike(username);
+    }
+
+    @Override
+    public List<User> findByAgeLessThan(Integer num) {
+        return userRepository.findByAgeLessThan(num);
+    }
+
+    @Override
+    public List<User> findByRoleRoleNameIgnoreCaseOrderByUsernameDesc(String roleName) {
+        return userRepository.findByRoleRoleNameIgnoreCaseOrderByUsernameDesc(roleName);
+    }
 }

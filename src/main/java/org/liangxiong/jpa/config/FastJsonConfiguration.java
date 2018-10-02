@@ -22,8 +22,9 @@ public class FastJsonConfiguration extends WebMvcConfigurerAdapter {
         super.configureMessageConverters(converters);
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
+        // SerializerFeature.DisableCircularReferenceDetect禁用循环引用检测
         config.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullListAsEmpty);
+                SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.DisableCircularReferenceDetect);
         fastConverter.setFastJsonConfig(config);
         converters.add(fastConverter);
     }
