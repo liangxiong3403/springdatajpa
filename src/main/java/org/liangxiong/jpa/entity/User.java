@@ -1,5 +1,6 @@
 package org.liangxiong.jpa.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,6 +56,13 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id")
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
     private Role role;
+
+    /**
+     * 测试方法拆分为属性地算法(SpringDataJPA Documentation chapter 4.4.3)
+     * The algorithm would match in the first split round already, choose the wrong property, and fail (as the type of roleRole probably has no name property).
+     */
+    ///@JSONField(serialize = false)
+    ///private String roleRole;
 
     @Override
     public String toString() {
