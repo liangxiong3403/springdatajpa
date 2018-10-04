@@ -1,9 +1,12 @@
 package org.liangxiong.jpa.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,6 +27,8 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = -480949435137714008L;
+
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     /**
      * 主键:用户id
@@ -54,7 +59,7 @@ public class User implements Serializable {
      * 关系：多个用户对应于一个角色
      */
     @JoinColumn(name = "role_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     private Role role;
 
     /**
@@ -63,6 +68,24 @@ public class User implements Serializable {
      */
     ///@JSONField(serialize = false)
     ///private String roleRole;
+
+    /**
+     * publish event
+     * The methods are called every time one of a Spring Data repository’s save(…) methods is called
+     */
+    @DomainEvents
+    private void domainEvents() {
+        logger.info("publish event");
+    }
+
+    /**
+     * clean the list of events to be published
+     * The methods are called every time one of a Spring Data repository’s save(…) methods is called
+     */
+    @AfterDomainEventPublication
+    private void callbackMethod() {
+        logger.info("clean the list of events to be published");
+    }
 
     @Override
     public String toString() {

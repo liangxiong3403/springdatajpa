@@ -244,4 +244,5 @@ public interface IUserService {
      */
     @Async
     List<User> findBySex(String sex) throws ExecutionException, InterruptedException;
+
 }

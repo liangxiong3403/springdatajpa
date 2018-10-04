@@ -3,6 +3,8 @@ package org.liangxiong.jpa.service.impl;
 import org.liangxiong.jpa.entity.User;
 import org.liangxiong.jpa.repository.UserRepository;
 import org.liangxiong.jpa.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,8 @@ import java.util.stream.Stream;
 @Service
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class UserServiceImpl implements IUserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -148,7 +152,7 @@ public class UserServiceImpl implements IUserService {
         try (Stream<User> stream = userRepository.findAllByCustomerQueryAndStream()) {
             return stream.collect(Collectors.toList());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Stream API process failed");
         }
         return null;
     }
@@ -158,7 +162,7 @@ public class UserServiceImpl implements IUserService {
         try (Stream<User> stream = userRepository.readAllByUsernameIsNotLike(condition)) {
             return stream.collect(Collectors.toList());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Stream API process failed");
         }
         return null;
     }
@@ -168,7 +172,7 @@ public class UserServiceImpl implements IUserService {
         try (Stream<User> stream = userRepository.streamAllPaged(pageable)) {
             return stream.collect(Collectors.toList());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Stream API process failed");
         }
         return null;
     }
@@ -177,7 +181,7 @@ public class UserServiceImpl implements IUserService {
     public User findByUsernameAndRoleRoleName(String username, String roleName) throws ExecutionException, InterruptedException {
         Future<User> future = userRepository.findByUsernameAndRoleRoleName(username, roleName);
         if (future.isCancelled()) {
-            System.out.println("cancelled");
+            logger.error("async task cancelled");
         } else if (future.isDone()) {
             return future.get();
         }
@@ -188,9 +192,9 @@ public class UserServiceImpl implements IUserService {
     public List<User> findByRoleRoleName(String roleName) throws ExecutionException, InterruptedException {
         CompletableFuture<List<User>> future = userRepository.findByRoleRoleName(roleName);
         if (future.isCompletedExceptionally()) {
-            System.out.println("error");
+            logger.error("async task error");
         } else if (future.isCancelled()) {
-            System.out.println("cancelled");
+            logger.error("async task cancelled");
         } else if (future.isDone()) {
             return future.get();
         }
@@ -200,7 +204,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> findBySex(String sex) throws ExecutionException, InterruptedException {
         ListenableFuture<List<User>> future = userRepository.findBySex(sex);
-        future.addCallback((Object o) -> System.out.println("success"), (Throwable throwable) -> System.out.println("failed"));
+        future.addCallback((Object o) -> logger.error("async task success"), (Throwable throwable) -> logger.error("async task failed"));
         return future.get();
     }
+
 }
