@@ -1,5 +1,7 @@
 package org.liangxiong.jpa.service.impl;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import org.liangxiong.jpa.entity.User;
 import org.liangxiong.jpa.repository.UserRepository;
 import org.liangxiong.jpa.service.IUserService;
@@ -208,4 +210,49 @@ public class UserServiceImpl implements IUserService {
         return future.get();
     }
 
+    /**
+     * 以下方法为Querydsl中所需要地
+     *
+     * @param predicate can be {@literal null}.
+     * @return
+     */
+    @Override
+    public User findOne(Predicate predicate) {
+        return userRepository.findOne(predicate);
+    }
+
+    @Override
+    public Iterable<User> findAll(Predicate predicate) {
+        return userRepository.findAll(predicate);
+    }
+
+    @Override
+    public Iterable<User> findAll(Predicate predicate, Sort sort) {
+        return userRepository.findAll(predicate, sort);
+    }
+
+    @Override
+    public Iterable<User> findAll(Predicate predicate, OrderSpecifier<?>... orders) {
+        return userRepository.findAll(predicate, orders);
+    }
+
+    @Override
+    public Iterable<User> findAll(OrderSpecifier<?>... orders) {
+        return userRepository.findAll(orders);
+    }
+
+    @Override
+    public Page<User> findAll(Predicate predicate, Pageable pageable) {
+        return userRepository.findAll(predicate, pageable);
+    }
+
+    @Override
+    public long count(Predicate predicate) {
+        return userRepository.count(predicate);
+    }
+
+    @Override
+    public boolean exists(Predicate predicate) {
+        return userRepository.exists(predicate);
+    }
 }

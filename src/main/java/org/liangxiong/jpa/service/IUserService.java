@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
  * Time:19:58
  * @Description
  */
-public interface IUserService {
+public interface IUserService extends IBaseService<User> {
 
     /**
      * 通过用户名查询用户数量

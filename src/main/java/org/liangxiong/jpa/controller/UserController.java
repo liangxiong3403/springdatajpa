@@ -1,5 +1,8 @@
 package org.liangxiong.jpa.controller;
 
+import com.alibaba.druid.util.StringUtils;
+import com.querydsl.core.types.Predicate;
+import org.liangxiong.jpa.entity.QUser;
 import org.liangxiong.jpa.entity.User;
 import org.liangxiong.jpa.service.IUserService;
 import org.slf4j.Logger;
@@ -8,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -338,6 +343,31 @@ public class UserController {
     }
 
     /**
+     * 使用Querydsl框架查询满足条件地用户列表
+     *
+     * @param username 用户名
+     * @param age      年龄
+     * @return
+     */
+    @GetMapping("/querydsl")
+    public List<User> querydsl(String username, Integer age) {
+        if (!StringUtils.isEmpty(username) && null != age) {
+            List<User> result = new ArrayList<>(10);
+            // 构造查询实体predicate
+            QUser qUser = QUser.user;
+            Predicate predicate = qUser.username.likeIgnoreCase(username).and(qUser.age.eq(age));
+            Iterable<User> iterable = userService.findAll(predicate);
+            Iterator<User> iterator = iterable.iterator();
+            while (iterator.hasNext()) {
+                User user = iterator.next();
+                result.add(user);
+            }
+            return result;
+        }
+        return null;
+    }
+
+    /**
      * 通过用户名删除用户,并返回删除数据条数
      *
      * @param username 用户名
@@ -370,4 +400,14 @@ public class UserController {
         return userService.save(user);
     }
 
+    /**
+     * DomainClassConverter
+     *
+     * @param user 用户
+     * @return
+     */
+    @RequestMapping("/converter/{id}")
+    public void showUserForm(@PathVariable("id") User user, Pageable pageable) {
+        logger.info("user: {}", user);
+    }
 }

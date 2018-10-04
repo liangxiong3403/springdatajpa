@@ -3,6 +3,7 @@ package org.liangxiong.jpa.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @Description 基础地Repository
  */
 @NoRepositoryBean
-public interface BaseRepository<T, ID extends Serializable> extends CrudRepository<T, ID> {
+public interface BaseRepository<T, ID extends Serializable> extends CrudRepository<T, ID>, QueryDslPredicateExecutor<T> {
 
     /**
      * 查询数据并排序
