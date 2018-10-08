@@ -38,7 +38,7 @@ public class UserController {
      * @return
      */
     @GetMapping
-    public Integer countByUsername(String username) {
+    public Integer countByUsername(@RequestParam String username) {
         return userService.countByUsername(username);
     }
 
@@ -49,7 +49,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/username")
-    public List<User> findByUsername(String username) {
+    public List<User> findByUsername(@RequestParam String username) {
         return userService.findByUsername(username);
     }
 
@@ -60,7 +60,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/id")
-    public User findOne(Integer id) {
+    public User findOne(@RequestParam Integer id) {
         return userService.findOne(id);
     }
 
@@ -71,7 +71,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/sex")
-    public List<User> readBySex(String sex) {
+    public List<User> readBySex(@RequestParam String sex) {
         return userService.readBySex(sex);
     }
 
@@ -83,7 +83,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/usernameOrAge")
-    public List<User> findDistinctByUsernameIgnoreCaseOrAgeOrderByUsernameAsc(String username, Integer age) {
+    public List<User> findDistinctByUsernameIgnoreCaseOrAgeOrderByUsernameAsc(@RequestParam String username, @RequestParam Integer age) {
         /*
          * 作用类似于findUserDistinctByUsernameIgnoreCaseOrAgeOrderByUsernameAsc
          * 作用类似于findDistinctUserByUsernameIgnoreCaseOrAgeOrderByUsernameAsc
@@ -99,7 +99,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/usernameAndSex")
-    public List<User> findByUsernameAndSex(String username, String sex) {
+    public List<User> findByUsernameAndSex(@RequestParam String username, @RequestParam String sex) {
         return userService.findByUsernameAndSex(username, sex);
     }
 
@@ -109,7 +109,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/ageBetween")
-    public List<User> findByAgeBetween(Integer start, Integer end) {
+    public List<User> findByAgeBetween(@RequestParam Integer start, @RequestParam Integer end) {
         return userService.findByAgeBetween(start, end);
     }
 
@@ -120,7 +120,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/usernameLike")
-    public List<User> findByUsernameLike(String username) {
+    public List<User> findByUsernameLike(@RequestParam String username) {
         return userService.findByUsernameLike(username);
     }
 
@@ -131,7 +131,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/ageLessThan")
-    public List<User> findByAgeLessThan(Integer num) {
+    public List<User> findByAgeLessThan(@RequestParam Integer num) {
         return userService.findByAgeLessThan(num);
     }
 
@@ -142,7 +142,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/roleName")
-    public List<User> findByRole_RoleNameIgnoreCaseOrderByUsernameDesc(String roleName) {
+    public List<User> findByRole_RoleNameIgnoreCaseOrderByUsernameDesc(@RequestParam String roleName) {
         return userService.findByRole_RoleNameIgnoreCaseOrderByUsernameDesc(roleName);
     }
 
@@ -155,7 +155,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/ageAndPage")
-    public List<User> findByAge(Integer age, Integer startPage, Integer pageSize) {
+    public List<User> findByAge(@RequestParam Integer age, @RequestParam Integer startPage, @RequestParam Integer pageSize) {
         Pageable pageable = new PageRequest(startPage, pageSize);
         Page<User> result = userService.findByAgeLessThan(age, pageable);
         return result.getContent();
@@ -170,7 +170,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/sexAndPage")
-    public List<User> findBySex(String sex, Integer startPage, Integer pageSize) {
+    public List<User> findBySex(@RequestParam String sex, @RequestParam Integer startPage, @RequestParam Integer pageSize) {
         Pageable pageable = new PageRequest(startPage, pageSize);
         Slice<User> result = userService.findBySex(sex, pageable);
         return result.getContent();
@@ -184,7 +184,7 @@ public class UserController {
      * @return
      */
     @GetMapping("sexAndSort")
-    public List<User> findBySex(String sex, String property) {
+    public List<User> findBySex(@RequestParam String sex, @RequestParam String property) {
         Sort sort = new Sort(Sort.Direction.DESC, property);
         return userService.findBySex(sex, sort);
     }
@@ -199,7 +199,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/usernameAndPageAndSort")
-    public List<User> findByUsernameLike(String username, Integer startPage, Integer pageSize, String property) {
+    public List<User> findByUsernameLike(@RequestParam String username, @RequestParam Integer startPage, @RequestParam Integer pageSize, @RequestParam String property) {
         Sort sort = new Sort(Sort.Direction.DESC, property);
         Pageable pageable = new PageRequest(startPage, pageSize, sort);
         return userService.findByUsernameLike(username, pageable);
@@ -234,7 +234,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/queryFirst10")
-    public List<User> queryFirst10ByUsernameLike(String username, Integer startPage, Integer pageSize) {
+    public List<User> queryFirst10ByUsernameLike(@RequestParam String username, @RequestParam Integer startPage, @RequestParam Integer pageSize) {
         Pageable pageable = new PageRequest(startPage, pageSize);
         return userService.queryFirst10ByUsernameLike(username, pageable).getContent();
     }
@@ -248,7 +248,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/top3ByUsernameLike")
-    public List<User> findTop3ByUsernameLike(String username, Integer startPage, Integer pageSize) {
+    public List<User> findTop3ByUsernameLike(@RequestParam String username, @RequestParam Integer startPage, @RequestParam Integer pageSize) {
         Pageable pageable = new PageRequest(startPage, pageSize);
         return userService.findTop3ByUsernameLike(username, pageable).getContent();
     }
@@ -270,7 +270,7 @@ public class UserController {
      * @return
      */
     @GetMapping("notLikeUsernameAndStream")
-    public List<User> readAllByUsernameIsNotLike(String condition) {
+    public List<User> readAllByUsernameIsNotLike(@RequestParam String condition) {
         return userService.readAllByUsernameIsNotLike(condition);
     }
 
@@ -282,7 +282,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/streamAndPage")
-    public List<User> streamAllPaged(Integer startPage, Integer pageSize) {
+    public List<User> streamAllPaged(@RequestParam Integer startPage, @RequestParam Integer pageSize) {
         Pageable pageable = new PageRequest(startPage, pageSize);
         return userService.streamAllPaged(pageable);
     }
@@ -295,7 +295,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/asyncUsernameAndRoleName")
-    public User findByUsernameAndRoleRoleName(String username, String roleName) {
+    public User findByUsernameAndRoleRoleName(@RequestParam String username, @RequestParam String roleName) {
         try {
             return userService.findByUsernameAndRoleRoleName(username, roleName);
         } catch (ExecutionException e) {
@@ -313,7 +313,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/asyncRoleName")
-    public List<User> findByRoleRoleName(String roleName) {
+    public List<User> findByRoleRoleName(@RequestParam String roleName) {
         try {
             return userService.findByRoleRoleName(roleName);
         } catch (ExecutionException e) {
@@ -331,7 +331,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/asyncSex")
-    public List<User> findOneBySex(String sex) {
+    public List<User> findOneBySex(@RequestParam String sex) {
         try {
             return userService.findBySex(sex);
         } catch (ExecutionException e) {
@@ -350,7 +350,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/querydsl")
-    public List<User> querydsl(String username, Integer age) {
+    public List<User> querydsl(@RequestParam String username, @RequestParam Integer age) {
         if (!StringUtils.isEmpty(username) && null != age) {
             List<User> result = new ArrayList<>(10);
             // 构造查询实体predicate
@@ -374,7 +374,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/one")
-    public Integer deleteByUsername(String username) {
+    public Integer deleteByUsername(@RequestParam String username) {
         return userService.deleteByUsername(username);
     }
 
@@ -385,7 +385,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/many")
-    public List<User> removeByUsername(String username) {
+    public List<User> removeByUsername(@RequestParam String username) {
         return userService.removeByUsername(username);
     }
 
