@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -401,13 +402,24 @@ public class UserController {
     }
 
     /**
-     * DomainClassConverter
+     * DomainClassConverter,直接接收Domain class
      *
      * @param user 用户
      * @return
      */
     @RequestMapping("/converter/{id}")
-    public void showUserForm(@PathVariable("id") User user, Pageable pageable) {
-        logger.info("user: {}", user);
+    public User showUserForm(@PathVariable("id") User user) {
+        return user;
+    }
+
+    /**
+     * 分页转换器,直接接收分页对象
+     *
+     * @param pageable
+     * @return
+     */
+    @RequestMapping("/converter/pageable/{size}")
+    public List<User> findByPageable(@PageableDefault(page = 1, size = 5, sort = "username", direction = Sort.Direction.ASC) Pageable pageable) {
+        return userService.streamAllPaged(pageable);
     }
 }

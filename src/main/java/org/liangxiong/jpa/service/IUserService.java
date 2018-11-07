@@ -138,7 +138,7 @@ public interface IUserService extends IBaseService<User> {
      *
      * @param sex      性别
      * @param pageable 分页条件
-     * @return
+     * @returnstreamAllPaged
      */
     Slice<User> findBySex(String sex, Pageable pageable);
 
